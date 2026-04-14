@@ -5,12 +5,12 @@ public class FPSController : MonoBehaviour
 {
     #region General Variables
     [Header("Movement & Look")]
-    [SerializeField] GameObject camHolder; //Ref al objeto que tiene como hijo la cámara (rota por la cámara)
+    [SerializeField] GameObject camHolder;
     [SerializeField] float speed = 5f;
     [SerializeField] float sprintSpeed = 8f;
     [SerializeField] float crouchSpeed = 3f;
-    [SerializeField] float maxForce = 1f; //Fuerza máxima de aceleración
-    [SerializeField] float sensitivity = 0.1f; //Sensibilidad para el input de look
+    [SerializeField] float maxForce = 1f;
+    [SerializeField] float sensitivity = 0.1f;
 
     [Header("Jump & GroundCheck")]
     [SerializeField] float jumpForce = 5f;
@@ -22,13 +22,16 @@ public class FPSController : MonoBehaviour
     [Header("Player State Bools")]
     [SerializeField] bool isSprinting;
     [SerializeField] bool isCrouching;
+
+    // PROPIEDADES PARA OTROS SCRIPTS
+    public bool IsCrouching => isCrouching;
+    public bool IsSprinting => isSprinting;
+
     #endregion
 
-    //Variables de referencia privadas
-    Rigidbody rb; //Ref al rigidbody del player
-    Animator anim; //Ref al animator del player
+    Rigidbody rb;
+    Animator anim;
 
-    //Variables para el input
     Vector2 moveInput;
     Vector2 lookInput;
     float lookRotation;
@@ -39,22 +42,17 @@ public class FPSController : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //Lock del cursor del ratón
-        Cursor.lockState = CursorLockMode.Locked; //Mueve el cursor al centro
-        Cursor.visible = false; //Oculta el cursor de la vista
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //Groundcheck
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
-        //Dibujar un rayo ficticio en escena para determinar la orientación de la cámara
+
         Debug.DrawRay(camHolder.transform.position, camHolder.transform.forward * 100f, Color.red);
-        
     }
 
     private void FixedUpdate()
@@ -69,36 +67,35 @@ public class FPSController : MonoBehaviour
 
     void CameraLook()
     {
-        //Rotación horizontal del cuerpo del personaje
         transform.Rotate(Vector3.up * lookInput.x * sensitivity);
-        //Rotación vertical (la lleva la cámara)
+
         lookRotation += (-lookInput.y * sensitivity);
         lookRotation = Mathf.Clamp(lookRotation, -90, 90);
+
         camHolder.transform.localEulerAngles = new Vector3(lookRotation, 0f, 0f);
     }
 
     void Movement()
     {
-        Vector3 currentVelocity = rb.linearVelocity; //Necesitamos calcular la velocidad actual del rb constantemente
-        Vector3 targetVelocity = new Vector3(moveInput.x, 0, moveInput.y); //Velocidad a alcanzar = la dirección que pulsamos
+        Vector3 currentVelocity = rb.linearVelocity;
+
+        Vector3 targetVelocity = new Vector3(moveInput.x, 0, moveInput.y);
+
         targetVelocity *= isCrouching ? crouchSpeed : (isSprinting ? sprintSpeed : speed);
-        
-        //Convertir la dirección local en global
+
         targetVelocity = transform.TransformDirection(targetVelocity);
 
-        //Calcular el cambio de velocidad (aceleración)
         Vector3 velocityChange = (targetVelocity - currentVelocity);
         velocityChange = new Vector3(velocityChange.x, 0f, velocityChange.z);
         velocityChange = Vector3.ClampMagnitude(velocityChange, maxForce);
 
-        //Aplicar la fuerza de movimiento/aceleración
         rb.AddForce(velocityChange, ForceMode.VelocityChange);
-
     }
 
     void Jump()
     {
-        if (isGrounded) rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        if (isGrounded)
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
     #region Input Methods
@@ -111,10 +108,12 @@ public class FPSController : MonoBehaviour
     {
         lookInput = context.ReadValue<Vector2>();
     }
+
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed) Jump();
     }
+
     public void OnCrouch(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -123,6 +122,7 @@ public class FPSController : MonoBehaviour
             anim.SetBool("isCrouching", isCrouching);
         }
     }
+
     public void OnSprint(InputAction.CallbackContext context)
     {
         if (context.performed && !isCrouching) isSprinting = true;
