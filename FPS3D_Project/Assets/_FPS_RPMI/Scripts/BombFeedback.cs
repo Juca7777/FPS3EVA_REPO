@@ -17,29 +17,37 @@ public class BombFeedback : MonoBehaviour
 
     void Update()
     {
+        // SI HA EXPLOTADO → APAGAR TODO
+        if (timer.haExplotado)
+        {
+            luzRoja.intensity = 0f;
+            audioSource.Stop();
+            enabled = false;
+            return;
+        }
+
         float tiempoRestante = timer.tiempo;
         float tiempoMax = 30f;
 
-        // Duración de cada pulso (más corto al final)
+        // Duración del pulso (más rápido al final)
         float duracionPulso = Mathf.Lerp(1f, 0.2f, 1f - (tiempoRestante / tiempoMax));
 
-        // Avanza el pulso normalizado (0 → 1)
         tiempoPulso += Time.deltaTime / duracionPulso;
 
         if (tiempoPulso >= 1f)
         {
             tiempoPulso = 0f;
-            haPitido = false; // reset para siguiente pulso
+            haPitido = false;
         }
 
-        //  CURVA SUAVE tipo latido
-        float pulso = Mathf.Sin(tiempoPulso * Mathf.PI); // curva perfecta de latido
+        //  CURVA SUAVE
+        float pulso = Mathf.Sin(tiempoPulso * Mathf.PI);
 
-        //  LUZ SUAVE
+        // LUZ
         luzRoja.intensity = pulso * intensidadMax;
         luzRoja.range = Mathf.Lerp(rangoMin, rangoMax, pulso);
 
-        //  PITIDO (solo una vez por pulso, en el pico)
+        //  PITIDO en el pico
         if (pulso > 0.9f && !haPitido)
         {
             audioSource.PlayOneShot(pitido);

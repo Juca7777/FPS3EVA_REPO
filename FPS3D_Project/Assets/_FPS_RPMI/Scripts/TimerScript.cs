@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +10,11 @@ public class Timer : MonoBehaviour
     public GameObject explosionVFX;
     public Transform puntoExplosion;
 
-    private bool haExplotado = false;
+    public CameraShake cameraShake;
+    public ScreenFlash screenFlash;
+
+    public bool haExplotado = false;
+
     private float parpadeoTimer = 0f;
 
     void Update()
@@ -28,7 +32,7 @@ public class Timer : MonoBehaviour
         int segundos = Mathf.FloorToInt(tiempo % 60f);
         textoTiempo.text = string.Format("{0:00}:{1:00}", minutos, segundos);
 
-        //PARPADEO PROGRESIVO EN LOS ÚLTIMOS 10s
+        //  PARPADEO PROGRESIVO EN LOS ÃšLTIMOS 10s
         if (tiempo <= 10f)
         {
             float velocidad = Mathf.Lerp(3f, 10f, 1f - (tiempo / 10f));
@@ -44,7 +48,7 @@ public class Timer : MonoBehaviour
             textoTiempo.color = Color.white;
         }
 
-        //EXPLOSIÓN
+        //  EXPLOSIÃ“N
         if (tiempo <= 0 && !haExplotado)
         {
             Explode();
@@ -56,6 +60,13 @@ public class Timer : MonoBehaviour
         haExplotado = true;
 
         Instantiate(explosionVFX, puntoExplosion.position, Quaternion.identity);
+
+        //  EFECTOS PRO
+        if (cameraShake != null)
+            cameraShake.Shake();
+
+        if (screenFlash != null)
+            screenFlash.Flash();
 
         textoTiempo.enabled = false;
 
