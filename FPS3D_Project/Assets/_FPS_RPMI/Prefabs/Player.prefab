@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1924638822963782993}
   - component: {fileID: 549580248295470555}
   - component: {fileID: 1238355849769159799}
+  - component: {fileID: 1799424394281637794}
   m_Layer: 0
   m_Name: CamHolder
   m_TagString: Untagged
@@ -175,6 +176,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1799424394281637794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134058216773038135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00cdc9a646ca9343b7e959623d50351, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraRecoil
+  recoilReturnSpeed: 8
+  recoilSnappiness: 10
 --- !u!1 &3833005576824954775
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,7 +768,7 @@ MonoBehaviour:
   shootPoint: {fileID: 0}
   impactLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   damage: 10
   range: 100
   spread: 0
@@ -866,7 +881,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSway
   playerController: {fileID: 168239759366032745}
   playerRb: {fileID: 221619470689635655}
-  mouseAmount: 0.005
+  idleAmount: 0.002
+  walkAmount: 0.005
+  sprintAmount: 0.01
+  crouchAmount: 0.0015
   rotationAmount: 0.2
-  bobAmount: 0.03
   smooth: 20
