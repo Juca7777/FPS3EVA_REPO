@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HeadBob : MonoBehaviour
 {
@@ -136,7 +136,7 @@ public class HeadBob : MonoBehaviour
         );
 
         // =========================
-        //  FOV DIN�MICO
+        //  FOV DINÁMICO
         // =========================
         if (cam != null)
         {

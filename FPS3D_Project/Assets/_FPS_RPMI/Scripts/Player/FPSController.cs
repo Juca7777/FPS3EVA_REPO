@@ -22,6 +22,10 @@ public class FPSController : MonoBehaviour
     [Header("Player State Bools")]
     [SerializeField] bool isSprinting;
     [SerializeField] bool isCrouching;
+    [SerializeField] bool isInteracting;
+
+    [Header("Extras")]
+    [SerializeField] GameObject interactor;
 
     // PROPIEDADES PARA OTROS SCRIPTS
     public bool IsCrouching => isCrouching;
@@ -34,6 +38,7 @@ public class FPSController : MonoBehaviour
 
     Vector2 moveInput;
     Vector2 lookInput;
+    Vector2 Interact;
     float lookRotation;
 
     private void Awake()
@@ -128,5 +133,19 @@ public class FPSController : MonoBehaviour
         if (context.performed && !isCrouching) isSprinting = true;
         if (context.canceled) isSprinting = false;
     }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            interactor.SetActive(true);
+        }
+
+        if (context.canceled)
+        {
+            interactor.SetActive(false);
+        }
+    }
+
     #endregion
 }

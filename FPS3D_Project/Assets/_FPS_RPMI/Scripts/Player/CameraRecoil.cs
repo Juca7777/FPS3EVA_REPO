@@ -5,22 +5,28 @@ public class CameraRecoil : MonoBehaviour
     public static CameraRecoil Instance;
 
     [Header("Recoil Settings")]
-    public float recoilReturnSpeed = 8f;
-    public float recoilSnappiness = 10f;
+    public float recoilReturnSpeed = 6f;
+    public float recoilSnappiness = 12f;
 
     private Vector2 currentRecoil;
     private Vector2 targetRecoil;
+    private Vector2 recoilVelocity;
 
-    private void Awake()
+    void Awake()
     {
         Instance = this;
     }
 
     void Update()
     {
-        //  volver suavemente a 0
         targetRecoil = Vector2.Lerp(targetRecoil, Vector2.zero, Time.deltaTime * recoilReturnSpeed);
-        currentRecoil = Vector2.Lerp(currentRecoil, targetRecoil, Time.deltaTime * recoilSnappiness);
+
+        currentRecoil = Vector2.SmoothDamp(
+            currentRecoil,
+            targetRecoil,
+            ref recoilVelocity,
+            0.05f
+        );
 
         transform.localRotation = Quaternion.Euler(
             -currentRecoil.y,
