@@ -31,6 +31,16 @@ public class GunSystem : MonoBehaviour
     [SerializeField] bool shooting; //Indica si estamos disparando
     [SerializeField] bool canShoot; //Indica si podemos disparar en X momento del juego
     [SerializeField] bool reloading; //Indica si estamos en proceso de recarga
+
+    [Header("Disparo FX")]
+    [SerializeField] AudioSource audioSource;     // Fuente de audio
+    [SerializeField] AudioClip sonidoDisparo;     // Sonido del arma
+
+    [SerializeField] GameObject muzzleFlash;      // Fogonazo (VFX)
+    [SerializeField] Transform muzzlePoint;       // Punto de salida (punta del arma)
+
+
+
     #endregion
 
     private void Awake()
@@ -66,6 +76,19 @@ public class GunSystem : MonoBehaviour
 
     void Shoot()
     {
+        // SONIDO
+        if (audioSource != null && sonidoDisparo != null)
+        {
+            audioSource.PlayOneShot(sonidoDisparo);
+        }
+
+        // FOGONAZO
+        if (muzzleFlash != null && muzzlePoint != null)
+        {
+            Instantiate(muzzleFlash, muzzlePoint.position, muzzlePoint.rotation);
+        }
+
+
         Vector3 direction = fpsCam.transform.forward;
 
         direction.x += Random.Range(-spread, spread);
