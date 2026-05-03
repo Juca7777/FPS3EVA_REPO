@@ -968,6 +968,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 477275136603234758, guid: 4aae18efbe46286419c6b424064192ec, type: 3}
   m_PrefabInstance: {fileID: 769172864}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1796367528 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5494758883400050406, guid: 3f95fb56a8a25ef4fab8282daeae3a71, type: 3}
+  m_PrefabInstance: {fileID: 677535296}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1825986888
 GameObject:
   m_ObjectHideFlags: 0
@@ -1162,6 +1167,18 @@ PrefabInstance:
     - target: {fileID: 3876163385538230469, guid: 4b44865840c1a4f4f88f5cc109cbdf72, type: 3}
       propertyPath: m_TagString
       value: Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 6188178258497824297, guid: 4b44865840c1a4f4f88f5cc109cbdf72, type: 3}
+      propertyPath: bomb
+      value: 
+      objectReference: {fileID: 643755100}
+    - target: {fileID: 6188178258497824297, guid: 4b44865840c1a4f4f88f5cc109cbdf72, type: 3}
+      propertyPath: promptUI
+      value: 
+      objectReference: {fileID: 1796367528}
+    - target: {fileID: 6188178258497824297, guid: 4b44865840c1a4f4f88f5cc109cbdf72, type: 3}
+      propertyPath: bombLayer.m_Bits
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 6470747679923729316, guid: 4b44865840c1a4f4f88f5cc109cbdf72, type: 3}
       propertyPath: m_Name
