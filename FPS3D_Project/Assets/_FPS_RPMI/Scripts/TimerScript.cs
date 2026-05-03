@@ -75,6 +75,6 @@ public class Timer : MonoBehaviour
 
     void PerderNivel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("SCN_Lose");
     }
 }
